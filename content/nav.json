@@ -1,0 +1,20 @@
+{
+  "versions": [
+    { "id": "13", "label": "V13", "build": "13.351", "released": "2025-04-27", "changelog": "changes-13" },
+    { "id": "14", "label": "V14", "build": "14.368", "released": "2026-04-01", "changelog": "changes-14" }
+  ],
+  "defaultVersion": "14",
+  "locales": [
+    { "id": "pt-BR", "label": "Português (BR)", "short": "PT" },
+    { "id": "en", "label": "English", "short": "EN" }
+  ],
+  "defaultLocale": "pt-BR",
+  "sections": [
+    { "id": "start",    "pages": ["intro", "setup", "manifest", "first-module", "first-system"] },
+    { "id": "core",     "pages": ["hooks", "documents", "data-models", "settings", "localization"] },
+    { "id": "entities", "pages": ["actor", "item", "active-effect", "chat-roll", "combat", "scene-token", "regions", "journal", "compendium", "other-documents"] },
+    { "id": "ui",       "pages": ["applicationv2", "sheets", "sheet-types", "dialogs", "canvas-controls", "styling"] },
+    { "id": "advanced", "pages": ["sockets", "migrations", "packaging", "api-map"] },
+    { "id": "changes",  "pages": ["changes-14", "changes-13"] }
+  ]
+}
