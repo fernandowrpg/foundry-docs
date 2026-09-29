@@ -1,0 +1,26 @@
+# Checks that docs/ (the GitHub Pages site) was rebuilt after editing the content.
+# If this fails: run `python build.py` locally and commit the docs/ folder.
+name: Check docs build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Rebuild the site
+        run: python build.py
+      - name: Fail if docs/ is out of date
+        run: |
+          if ! git diff --quiet -- docs/; then
+            echo "::error::docs/ is out of date. Run 'python build.py' and commit docs/."
+            git diff --stat -- docs/
+            exit 1
+          fi

@@ -11,7 +11,7 @@ adding one folder + one JSON file (see README.md).
 content/nav.json            navigation: sections, page ids, versions, locales
 content/<locale>/<page>.md  one Markdown file per page per locale (locale = en | pt-BR)
 i18n/<locale>.json          UI strings (menus, buttons, labels)
-build.py                    bundles everything into dist/index.html
+build.py                    bundles everything into docs/index.html (GitHub Pages)
 template.html               page shell (CSS + JS renderer)
 ```
 

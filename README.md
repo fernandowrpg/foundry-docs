@@ -16,8 +16,9 @@ content/<idioma>/<pagina>.md  uma página por idioma (en, pt-BR)
 i18n/<idioma>.json           textos da interface (menus, botões, rótulos)
 template.html                layout, CSS e o renderizador em JavaScript
 vendor/                      marked e highlight.js (embutidos no build, funcionam offline)
-build.py                     gera o site em dist/
-dist/index.html              o site pronto, um único arquivo: abra no navegador
+build.py                     gera o site em docs/
+docs/index.html              o site pronto (é esta pasta que o GitHub Pages publica)
+ci/check-docs.yml            workflow opcional: copie para .github/workflows/ para o GitHub conferir o build
 AUTHORING.md                 regras para escrever páginas (blocos de versão, avisos, estilo)
 FACTS.md                     fatos de API conferidos nas notas de versão oficiais
 ```
@@ -30,7 +31,20 @@ Só precisa do Python 3, sem dependências:
 python build.py
 ```
 
-O comando mostra quantas páginas cada idioma tem e quais estão faltando.
+O comando mostra quantas páginas cada idioma tem e quais estão faltando. Depois de editar
+qualquer página, rode o build e faça commit da pasta `docs/` junto.
+
+## Publicar no GitHub Pages
+
+1. Envie o projeto para um repositório no GitHub, com a pasta `docs/` na raiz do repositório.
+2. No repositório, abra **Settings → Pages**.
+3. Em **Source**, escolha **Deploy from a branch**.
+4. Em **Branch**, escolha `main` e a pasta **`/docs`**, e clique em **Save**.
+5. Em um ou dois minutos o site fica em `https://<seu-usuario>.github.io/<nome-do-repositorio>/`.
+
+A cada `git push` com a pasta `docs/` atualizada, o GitHub Pages publica a nova versão sozinho.
+Opcional: copie `ci/check-docs.yml` para `.github/workflows/check-docs.yml`. Esse workflow avisa (com um erro no GitHub) se você esqueceu de
+rodar `python build.py` antes do commit.
 
 ## Adicionar um idioma (por exemplo, espanhol)
 
@@ -69,7 +83,8 @@ Veja os detalhes em `AUTHORING.md`.
 
 ## English
 
-- **Build:** `python build.py` (Python 3, no dependencies). Output: `dist/index.html`, a single self-contained file.
+- **Build:** `python build.py` (Python 3, no dependencies). Output: `docs/index.html`, a single self-contained file.
+- **GitHub Pages:** Settings → Pages → Deploy from a branch → `main` + `/docs` → Save. Commit `docs/` after every build.
 - **Add a language:** copy `i18n/en.json` to `i18n/<code>.json`, add `content/<code>/` pages (missing pages fall back to English with a notice), register the locale in `content/nav.json`, rebuild.
 - **Add a Foundry version:** add it to `versions` in `content/nav.json`, write `changes-<n>` in each language, and use `::: v<n>`, `::: v<n>+` and `::: changed-<n>` blocks.
 - **Writing rules:** see `AUTHORING.md`. Verified API facts are in `FACTS.md`.

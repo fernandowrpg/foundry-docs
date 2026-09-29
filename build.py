@@ -2,8 +2,10 @@
 """Bundle the guide into a single HTML file.
 
 Usage:  python build.py
-Output: dist/index.html        standalone page (open in any browser)
-        dist/artifact.html     body-only version used for claude.ai publishing
+Output: docs/index.html        the site, ready for GitHub Pages ("Deploy from a branch" → /docs)
+        docs/404.html          same page, so unknown URLs still open the guide
+        docs/.nojekyll         tells GitHub Pages to serve the files as they are
+        build/artifact.html    body-only version used for claude.ai publishing (not committed)
 
 Only the Python standard library is needed. Locales and pages are discovered
 from content/nav.json, i18n/<locale>.json and content/<locale>/<page>.md.
@@ -42,15 +44,21 @@ template = (ROOT / "template.html").read_text(encoding="utf-8")
 template = template.replace("<!--__VENDOR__", vendor + "<!--", 1)
 fragment = template.replace("/*__DATA__*/null", data)
 
-dist = ROOT / "dist"
-dist.mkdir(exist_ok=True)
-(dist / "artifact.html").write_text(fragment, encoding="utf-8")
 standalone = ('<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
               '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
               '<style>[hidden]{display:none!important}body{margin:0}</style>\n</head>\n<body>\n'
               + fragment + "\n</body>\n</html>\n")
-(dist / "index.html").write_text(standalone, encoding="utf-8")
 
-print("Built dist/index.html and dist/artifact.html")
+docs = ROOT / "docs"
+docs.mkdir(exist_ok=True)
+(docs / "index.html").write_text(standalone, encoding="utf-8")
+(docs / "404.html").write_text(standalone, encoding="utf-8")
+(docs / ".nojekyll").write_text("", encoding="utf-8")
+
+build = ROOT / "build"
+build.mkdir(exist_ok=True)
+(build / "artifact.html").write_text(fragment, encoding="utf-8")
+
+print("Built docs/index.html (GitHub Pages) and build/artifact.html")
 print("\n".join(report))
 sys.exit(0)
